@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import TeamInfo from "./teamInfo";
+import Load from "./load";
 
 export default function Teams() {
   const [teamsData, setTeamsData] = useState([]);
@@ -317,7 +318,7 @@ export default function Teams() {
     </div>
   );
   if (load) {
-    return <div>Loading...</div>;
+    return <Load />;
   }
   return shortlist ? teams : ShortListTeams;
 }
