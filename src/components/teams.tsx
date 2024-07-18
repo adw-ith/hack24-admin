@@ -34,6 +34,14 @@ export default function Teams() {
     fetchShTeams();
     fetchTeams();
   }, []);
+
+  useEffect(() => {
+    setLoad(true);
+    setTimeout(() => {
+      setLoad(false);
+    }, 500);
+  }, [shortlist]);
+
   const filteredTeams = shortlist
     ? teamsData.filter(
         (team) =>
@@ -308,5 +316,8 @@ export default function Teams() {
       </div>
     </div>
   );
+  if (load) {
+    return <div>Loading...</div>;
+  }
   return shortlist ? teams : ShortListTeams;
 }
