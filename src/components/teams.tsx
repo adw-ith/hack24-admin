@@ -5,8 +5,7 @@ import Load from "./load";
 
 export default function Teams() {
   const [teamsData, setTeamsData] = useState([]);
-  const [shteamsData, setShTeamsData] = useState([]);
-
+  const [shTeamsData, setShTeamsData] = useState([]);
   const [registered, setRegistered] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
@@ -15,25 +14,31 @@ export default function Teams() {
   const [load, setLoad] = useState(false);
   const [shortlist, setShortlist] = useState(true);
 
+  const fetchTeams = async () => {
+    try {
+      const response = await axios.get("/api/fetchTeams");
+      setTeamsData(response.data);
+    } catch (error) {
+      console.error("Failed to fetch teams:", error);
+    }
+  };
+
+  const fetchShTeams = async () => {
+    try {
+      const response = await axios.get("/api/fetchShortlistTeams");
+      setShTeamsData(response.data);
+    } catch (error) {
+      console.error("Failed to fetch teams:", error);
+    }
+  };
+
   useEffect(() => {
-    const fetchTeams = async () => {
-      try {
-        const response = await axios.get("/api/fetchTeams");
-        setTeamsData(response.data);
-      } catch (error) {
-        console.error("Failed to fetch teams:", error);
-      }
-    };
-    const fetchShTeams = async () => {
-      try {
-        const response = await axios.get("/api/fetchShortlistTeams");
-        setShTeamsData(response.data);
-      } catch (error) {
-        console.error("Failed to fetch teams:", error);
-      }
-    };
-    fetchShTeams();
-    fetchTeams();
+    const interval = setInterval(() => {
+      fetchTeams();
+      fetchShTeams();
+    }, 10000); // Poll every 10 seconds
+
+    return () => clearInterval(interval); // Clean up on unmount
   }, []);
 
   useEffect(() => {
@@ -49,7 +54,7 @@ export default function Teams() {
           //@ts-ignore
           team.registered === registered
       )
-    : shteamsData;
+    : shTeamsData;
 
   const totalPages = Math.ceil(filteredTeams.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -317,6 +322,7 @@ export default function Teams() {
       </div>
     </div>
   );
+
   if (load) {
     return <Load />;
   }
