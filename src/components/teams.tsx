@@ -36,7 +36,7 @@ export default function Teams() {
     const interval = setInterval(() => {
       fetchTeams();
       fetchShTeams();
-    }, 10000); // Poll every 10 seconds
+    }, 1000); // Poll every 10 seconds
 
     return () => clearInterval(interval); // Clean up on unmount
   }, []);
