@@ -33,12 +33,8 @@ export default function Teams() {
   };
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      fetchTeams();
-      fetchShTeams();
-    }, 1000); // Poll every 10 seconds
-
-    return () => clearInterval(interval); // Clean up on unmount
+    fetchTeams();
+    fetchShTeams();
   }, []);
 
   useEffect(() => {
